@@ -6,7 +6,7 @@ const td = require('testdouble');
 
 describe('JSON Tests', () => {
   const JSON_FILE = '/tmp/file.json';
-  const JSON_REF_FILE = '/tmp/file-refs.json';
+  const JSON_REF_FILE = '/tmp/file-refmerge.json';
   const JSON_MERGE_FILE = '/tmp/file-merge.json';
   const JSON_FILE_WRITE = '/tmp/file-write.json';
 
@@ -39,7 +39,8 @@ describe('JSON Tests', () => {
   it('process: should throw error with no arguments', (done) => {
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.process()
+    jsonProcessor
+      .process()
       .then(() => {
         done('Rejection failed.');
       })
@@ -53,7 +54,8 @@ describe('JSON Tests', () => {
     fs.writeFileSync(JSON_FILE, '', 'utf-8');
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.process(JSON_FILE)
+    jsonProcessor
+      .process(JSON_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -68,7 +70,8 @@ describe('JSON Tests', () => {
     fs.writeFileSync(JSON_FILE, jsonContent, 'utf-8');
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.process(JSON_FILE)
+    jsonProcessor
+      .process(JSON_FILE)
       .then((results) => {
         should(results).be.eql({
           dataString: '{"test":true}',
@@ -88,7 +91,8 @@ describe('JSON Tests', () => {
     fs.writeFileSync(JSON_REF_FILE, jsonRefContent, 'utf-8');
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.process(JSON_REF_FILE)
+    jsonProcessor
+      .process(JSON_REF_FILE)
       .then((results) => {
         should(results).be.eql({
           dataString: '{"another":{"test":true}}',
@@ -105,7 +109,8 @@ describe('JSON Tests', () => {
     fs.writeFileSync(JSON_MERGE_FILE, '{"$merge":[{"one":true},{"two":true}]}', 'utf-8');
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.process(JSON_MERGE_FILE)
+    jsonProcessor
+      .process(JSON_MERGE_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -122,11 +127,14 @@ describe('JSON Tests', () => {
     const jsonMergeContent = fs.readFileSync(JSON_MERGE_FILE.replace('/tmp', `${__dirname}/data`), 'utf-8');
     fs.writeFileSync(JSON_FILE, jsonContent, 'utf-8');
     fs.writeFileSync(JSON_REF_FILE, jsonRefContent, 'utf-8');
-    const jsonMergeContentMalformed = JSON.stringify(Object.assign({}, JSON.parse(jsonMergeContent), JSON.parse('{"another":{"$merge":[{"one":true},{"two":true}]}}')));
+    const jsonMergeContentMalformed = JSON.stringify(
+      Object.assign({}, JSON.parse(jsonMergeContent), JSON.parse('{"another":{"$merge":[{"one":true},{"two":true}]}}')),
+    );
     fs.writeFileSync(JSON_MERGE_FILE, jsonMergeContentMalformed, 'utf-8');
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.process(JSON_MERGE_FILE)
+    jsonProcessor
+      .process(JSON_MERGE_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -145,7 +153,8 @@ describe('JSON Tests', () => {
     fs.writeFileSync(JSON_MERGE_FILE, jsonMergeContent, 'utf-8');
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.process(JSON_MERGE_FILE)
+    jsonProcessor
+      .process(JSON_MERGE_FILE)
       .then((results) => {
         should(results).be.eql({
           dataString: '{"test":{"test":true,"another":{"test":true}}}',
@@ -162,7 +171,8 @@ describe('JSON Tests', () => {
     td.replace(fs, 'writeFile', (outputFile, data, option, cb) => cb(new Error('An error occurred.')));
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.write(JSON_FILE_WRITE, { test: true })
+    jsonProcessor
+      .write(JSON_FILE_WRITE, { test: true })
       .then(() => {
         done('Rejection failed.');
       })
@@ -176,7 +186,8 @@ describe('JSON Tests', () => {
     td.replace(fs, 'writeFile', (outputFile, data, option, cb) => cb());
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.write(JSON_FILE_WRITE, { test: true })
+    jsonProcessor
+      .write(JSON_FILE_WRITE, { test: true })
       .then((results) => {
         should(results).be.eql({
           outputFile: JSON_FILE_WRITE,
@@ -191,7 +202,8 @@ describe('JSON Tests', () => {
   it('dump: should dump to output file', (done) => {
     const jsonProcessor = require('../lib/processor-json');
 
-    jsonProcessor.dump({ test: true })
+    jsonProcessor
+      .dump({ test: true })
       .then((results) => {
         should(results).be.eql({
           content: JSON.stringify({ test: true }),

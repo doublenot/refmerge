@@ -42,22 +42,22 @@ describe('Index Tests', () => {
   });
 
   it('should throw error and exit with no input file arguments', (done) => {
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs()
+    refmerge()
       .then(() => {
         done('Rejection failed.');
       })
       .catch((err) => {
-        should(err).be.eql(new Error('TypeError: Cannot read property \'indexOf\' of undefined'));
+        should(err).be.eql(new Error('No such file or directory.'));
         done();
       });
   });
 
   it('should throw error and exit with non-existent file path', (done) => {
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs('/tmp/does-not-exist.yaml')
+    refmerge('/tmp/does-not-exist.yaml')
       .then(() => {
         done('Rejection failed.');
       })
@@ -68,27 +68,27 @@ describe('Index Tests', () => {
   });
 
   it('should throw error and exit with invalid config file', (done) => {
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs('/tmp/does-not-exist')
+    refmerge('/tmp/does-not-exist')
       .then(() => {
         done('Rejection failed.');
       })
       .catch((err) => {
-        should(err).be.eql(new Error('No valid config file found.'));
+        should(err).be.eql(new Error('No such file or directory.'));
         done();
       });
   });
 
   it('should throw error and exit with invalid config file', (done) => {
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs('/tmp/does-not-exist')
+    refmerge('/tmp/does-not-exist')
       .then(() => {
         done('Rejection failed.');
       })
       .catch((err) => {
-        should(err).be.eql(new Error('No valid config file found.'));
+        should(err).be.eql(new Error('No such file or directory.'));
         done();
       });
   });
@@ -98,9 +98,9 @@ describe('Index Tests', () => {
     td.replace(jsonProcessor, 'process', () => {
       throw new Error('An error occurred.');
     });
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs(JSON_FILE)
+    refmerge(JSON_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -112,10 +112,14 @@ describe('Index Tests', () => {
 
   it('should throw error and exit when processor.process rejects with error', (done) => {
     fs.writeFileSync(YAML_FILE, '', 'utf-8');
-    td.replace(yamlProcessor, 'process', () => new Promise((resolve, reject) => reject(new Error('An error occurred.'))));
-    const refs = require('../index');
+    td.replace(
+      yamlProcessor,
+      'process',
+      () => new Promise((resolve, reject) => reject(new Error('An error occurred.'))),
+    );
+    const refmerge = require('../index');
 
-    refs(YAML_FILE)
+    refmerge(YAML_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -127,11 +131,11 @@ describe('Index Tests', () => {
 
   it('should throw error and exit when processor.process resolves with incorrect data', (done) => {
     fs.writeFileSync(INI_FILE, '', 'utf-8');
-    td.replace(iniProcessor, 'process', () => new Promise(resolve => resolve({})));
+    td.replace(iniProcessor, 'process', () => new Promise((resolve) => resolve({})));
     // td.replace(yamlProcessor, 'dump', () => new Promise((resolve, reject) => reject(new Error('An error occurred.'))));
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs(INI_FILE)
+    refmerge(INI_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -143,11 +147,11 @@ describe('Index Tests', () => {
 
   it('should throw error and exit when processor.dump rejects with error', (done) => {
     fs.writeFileSync(YAML_FILE, '', 'utf-8');
-    td.replace(yamlProcessor, 'process', () => new Promise(resolve => resolve({ dataString: '{"test":true}' })));
+    td.replace(yamlProcessor, 'process', () => new Promise((resolve) => resolve({ dataString: '{"test":true}' })));
     td.replace(yamlProcessor, 'dump', () => new Promise((resolve, reject) => reject(new Error('An error occurred.'))));
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs(YAML_FILE)
+    refmerge(YAML_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -159,11 +163,11 @@ describe('Index Tests', () => {
 
   it('should throw error and exit when processor.write rejects with error', (done) => {
     fs.writeFileSync(YAML_FILE, '', 'utf-8');
-    td.replace(yamlProcessor, 'process', () => new Promise(resolve => resolve({ dataString: '{"test":true}' })));
+    td.replace(yamlProcessor, 'process', () => new Promise((resolve) => resolve({ dataString: '{"test":true}' })));
     td.replace(yamlProcessor, 'write', () => new Promise((resolve, reject) => reject(new Error('An error occurred.'))));
-    const refs = require('../index');
+    const refmerge = require('../index');
 
-    refs(YAML_FILE, '/tmp/new.yaml')
+    refmerge(YAML_FILE, '/tmp/new.yaml')
       .then(() => {
         done('Rejection failed.');
       })
@@ -175,11 +179,11 @@ describe('Index Tests', () => {
 
   it('should process file correctly', (done) => {
     fs.writeFileSync(YAML_FILE, '', 'utf-8');
-    td.replace(yamlProcessor, 'process', () => new Promise(resolve => resolve({ dataString: '{"test":true}' })));
-    td.replace(yamlProcessor, 'dump', () => new Promise(resolve => resolve({ outputFile: YAML_FILE })));
-    const refs = require('../index');
+    td.replace(yamlProcessor, 'process', () => new Promise((resolve) => resolve({ dataString: '{"test":true}' })));
+    td.replace(yamlProcessor, 'dump', () => new Promise((resolve) => resolve({ outputFile: YAML_FILE })));
+    const refmerge = require('../index');
 
-    refs(YAML_FILE)
+    refmerge(YAML_FILE)
       .then((results) => {
         should(results).be.eql({
           outputFile: YAML_FILE,

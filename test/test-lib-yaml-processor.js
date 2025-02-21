@@ -6,7 +6,7 @@ const td = require('testdouble');
 
 describe('YAML Tests', () => {
   const YAML_FILE = '/tmp/file.yaml';
-  const YAML_REF_FILE = '/tmp/file-refs.yaml';
+  const YAML_REF_FILE = '/tmp/file-refmerge.yaml';
   const YAML_MERGE_FILE = '/tmp/file-merge.yaml';
   const YAML_FILE_WRITE = '/tmp/file-write.yaml';
 

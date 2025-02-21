@@ -5,7 +5,7 @@
 
 const program = require('commander');
 const pkgInfo = require('../package.json');
-const refs = require('../index');
+const refmerge = require('../index');
 
 let inputFile = null;
 let outputFile = null;
@@ -25,7 +25,7 @@ if (program.output) {
 }
 
 if (inputFile) {
-  refs(inputFile, outputFile)
+  refmerge(inputFile, outputFile)
     .then((results) => {
       let msg = '\n  done';
       if (results.outputFile) {

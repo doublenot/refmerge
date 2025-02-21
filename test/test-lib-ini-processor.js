@@ -7,7 +7,7 @@ const td = require('testdouble');
 
 describe('INI Tests', () => {
   const INI_FILE = '/tmp/file.ini';
-  const INI_REF_FILE = '/tmp/file-refs.ini';
+  const INI_REF_FILE = '/tmp/file-refmerge.ini';
   const INI_MERGE_FILE = '/tmp/file-merge.ini';
   const INI_FILE_WRITE = '/tmp/file-write.ini';
 
@@ -40,7 +40,8 @@ describe('INI Tests', () => {
   it('process: should throw error with no arguments', (done) => {
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.process()
+    iniProcessor
+      .process()
       .then(() => {
         done('Rejection failed.');
       })
@@ -57,7 +58,8 @@ describe('INI Tests', () => {
     });
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.process(INI_FILE)
+    iniProcessor
+      .process(INI_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -72,7 +74,8 @@ describe('INI Tests', () => {
     fs.writeFileSync(INI_FILE, iniContent, 'utf-8');
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.process(INI_FILE)
+    iniProcessor
+      .process(INI_FILE)
       .then((results) => {
         should(results).be.eql({
           dataString: '{"test":true}',
@@ -92,7 +95,8 @@ describe('INI Tests', () => {
     fs.writeFileSync(INI_REF_FILE, iniRefContent, 'utf-8');
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.process(INI_REF_FILE)
+    iniProcessor
+      .process(INI_REF_FILE)
       .then((results) => {
         should(results).be.eql({
           dataString: '{"another":{"test":true}}',
@@ -114,7 +118,8 @@ describe('INI Tests', () => {
     fs.writeFileSync(INI_MERGE_FILE, iniMergeContent, 'utf-8');
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.process(INI_MERGE_FILE)
+    iniProcessor
+      .process(INI_MERGE_FILE)
       .then(() => {
         done('Rejection failed.');
       })
@@ -128,7 +133,8 @@ describe('INI Tests', () => {
     td.replace(fs, 'writeFile', (outputFile, compiled, options, cb) => cb(new Error('An error occurred.')));
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.write(INI_FILE_WRITE, { test: true })
+    iniProcessor
+      .write(INI_FILE_WRITE, { test: true })
       .then(() => {
         done('Rejection failed.');
       })
@@ -142,7 +148,8 @@ describe('INI Tests', () => {
     td.replace(fs, 'writeFile', (outputFile, compiled, options, cb) => cb());
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.write(INI_FILE_WRITE, { test: true })
+    iniProcessor
+      .write(INI_FILE_WRITE, { test: true })
       .then((results) => {
         should(results).be.eql({
           outputFile: INI_FILE_WRITE,
@@ -160,7 +167,8 @@ describe('INI Tests', () => {
     });
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.dump({ test: true })
+    iniProcessor
+      .dump({ test: true })
       .then(() => {
         done('Rejection failed.');
       })
@@ -173,7 +181,8 @@ describe('INI Tests', () => {
   it('dump: should dump to output file', (done) => {
     const iniProcessor = require('../lib/processor-ini');
 
-    iniProcessor.dump({ test: true })
+    iniProcessor
+      .dump({ test: true })
       .then((results) => {
         should(results).be.eql({
           content: 'test=true\n',

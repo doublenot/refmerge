@@ -10,7 +10,7 @@ describe('Bin Tests', () => {
   const YAML_FILE = '/tmp/file.yaml';
 
   beforeEach(() => {
-    stdoutContent = `Usage: refs [options] <file>
+    stdoutContent = `Usage: refmerge [options] <file>
 
 Options:
   -V, --version        output the version number
@@ -30,7 +30,7 @@ Options:
   });
 
   it('should display help with no arguments', (done) => {
-    exec('node ./bin/refs.js', (error, stdout, stderr) => {
+    exec('node ./bin/refmerge.js', (error, stdout, stderr) => {
       should(error).be.eql(null);
       should(stdout).be.eql(stdoutContent);
       should(stderr).be.eql('');
@@ -38,8 +38,8 @@ Options:
     });
   });
 
-  it('should display help with \'-h\'', (done) => {
-    exec('node ./bin/refs.js -h', (error, stdout, stderr) => {
+  it("should display help with '-h'", (done) => {
+    exec('node ./bin/refmerge.js -h', (error, stdout, stderr) => {
       should(error).be.eql(null);
       should(stdout).be.eql(stdoutContent);
       should(stderr).be.eql('');
@@ -47,8 +47,8 @@ Options:
     });
   });
 
-  it('should display help with \'--help\'', (done) => {
-    exec('node ./bin/refs.js --help', (error, stdout, stderr) => {
+  it("should display help with '--help'", (done) => {
+    exec('node ./bin/refmerge.js --help', (error, stdout, stderr) => {
       should(error).be.eql(null);
       should(stdout).be.eql(stdoutContent);
       should(stderr).be.eql('');
@@ -56,10 +56,10 @@ Options:
     });
   });
 
-  it('should display version with \'-V\'', (done) => {
+  it("should display version with '-V'", (done) => {
     const pkgInfo = require('../package.json');
 
-    exec('node ./bin/refs.js -V', (error, stdout, stderr) => {
+    exec('node ./bin/refmerge.js -V', (error, stdout, stderr) => {
       should(error).be.eql(null);
       should(stdout).be.eql(`${pkgInfo.version}\n`);
       should(stderr).be.eql('');
@@ -67,10 +67,10 @@ Options:
     });
   });
 
-  it('should display version with \'--version\'', (done) => {
+  it("should display version with '--version'", (done) => {
     const pkgInfo = require('../package.json');
 
-    exec('node ./bin/refs.js --version', (error, stdout, stderr) => {
+    exec('node ./bin/refmerge.js --version', (error, stdout, stderr) => {
       should(error).be.eql(null);
       should(stdout).be.eql(`${pkgInfo.version}\n`);
       should(stderr).be.eql('');
