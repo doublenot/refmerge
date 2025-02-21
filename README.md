@@ -1,14 +1,14 @@
-[![Build Status](https://travis-ci.org/doublenot/refs.svg?branch=master)](https://travis-ci.org/doublenot/refs)
-[![Coverage Status](https://coveralls.io/repos/github/doublenot/refs/badge.svg?branch=master)](https://coveralls.io/github/doublenot/refs?branch=master)
+[![Build Status](https://travis-ci.org/doublenot/refmerge.svg?branch=master)](https://travis-ci.org/doublenot/refmerge)
+[![Coverage Status](https://coveralls.io/repos/github/doublenot/refmerge/badge.svg?branch=master)](https://coveralls.io/github/doublenot/refmerge?branch=master)
 
-# refs
+# refmerge
 
 Compile and merge YAML, JSON or INI config files together through file path references
 
 ### Install:
 
 ```bash
-$ npm install -g refs
+$ npm install -g refmerge
 ```
 
 ### Example: YAML
@@ -18,11 +18,11 @@ $ npm install -g refs
 AWSTemplateFormatVersion: '2010-09-09'
 
 Resources:
-  - $ref: ./relative/path/to/file.yaml
+  - $ref: ./resources/role-policies.yaml
 ```
 ```yaml
 RolePolicies:
-  $ref: ./resources/role-policies.yaml
+  $ref: ./resources/role-policy-iam-custom-role.yaml
 ```
 ```yaml
 Type: 'AWS::IAM::Policy'
@@ -54,7 +54,7 @@ Properties:
 'use strict';
 
 const path = require('path');
-const refs = require('refs');
+const refmerge = require('refmerge');
 
 const templateDir = `${__dirname}/../templates`;
 const buildDir = `${__dirname}/../build`;
@@ -62,7 +62,7 @@ const inputTemplate = path.resolve(`${templateDir}/template.yaml`);
 const outputFile = path.resolve(`${buildDir}/output-template.yaml`);
 
 try {
-  refs(inputTemplate, outputFile)
+  refmerge(inputTemplate, outputFile)
     .then((results) => {
       console.log(`\n  File written: ${results.outputFile}`);
     });
@@ -74,7 +74,7 @@ try {
 
 #### Or cli:
 ```bash
-$ refs -o ./build/output.yaml ./templates/main.yaml
+$ refmerge -o ./build/output.yaml ./templates/main.yaml
 ```
 
 #### Output:
