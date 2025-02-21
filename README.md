@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/doublenot/refmerge.svg?branch=master)](https://travis-ci.org/doublenot/refmerge)
-[![Coverage Status](https://coveralls.io/repos/github/doublenot/refmerge/badge.svg?branch=master)](https://coveralls.io/github/doublenot/refmerge?branch=master)
-
 # refmerge
 
 Compile and merge YAML, JSON or INI config files together through file path references
